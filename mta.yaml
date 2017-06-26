@@ -1,0 +1,34 @@
+ID: TechEd2017CentralDB
+_schema-version: '2.0'
+description: TechEd 2017 Central DB Project
+version: 1.0.2017
+
+modules:
+ - name: core_db
+   type: hdb
+   path: core_db
+   requires:
+    - name: teched-2017-container
+      properties:
+        TARGET_CONTAINER: '~{hdi-container-name}'
+    - name: CrossSchemaService
+      group: SERVICE_REPLACEMENTS
+      properties:
+        key: hdi-sflight-service
+        service: '~{sflight-service-name}'
+          
+resources:
+ - name: teched-2017-container
+   parameters:
+      config:
+         schema: TECHED_2017
+   properties:
+      hdi-container-name: ${service-name}
+   type: com.sap.xs.hdi-container
+
+ - name: CrossSchemaService
+   type: org.cloudfoundry.existing-service
+   parameters:
+     service-name: CROSS_SCHEMA_SFLIGHT
+   properties:
+     sflight-service-name: '${service-name}'
